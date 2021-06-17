@@ -1,0 +1,78 @@
+// Every line is (riscv) bananas!
+// Implementation of the RV32I instruction set (macro for each op)
+
+// should be assembled with all the other stl files
+// This file is independent of the bit-width, and uses the consts defined at runlib.fj
+
+// Everything after // is ignored, everything before first : is ignored too, and every whitespace is ignored (besides new line)
+// An opcode is:  F;L  F  ;L  or just  ;  (no F => F=0;  no L => L=next)
+
+
+
+// ---------- Init:
+
+
+.def riscv_init
+    .registers_init
+    .structs_init
+    .functions_init
+.end
+
+
+.def register_init
+    __RV_x0:  __RV_Zero:         .var 32
+    __RV_x1:  __RV_ra:           .var 32
+    __RV_x2:  __RV_sp:           .var 32
+    __RV_x3:  __RV_gp:           .var 32
+    __RV_x4:  __RV_tp:           .var 32
+
+    __RV_x5:  __RV_t0:           .var 32
+    __RV_x6:  __RV_t1:           .var 32
+    __RV_x7:  __RV_t2:           .var 32
+
+    __RV_x8:  __RV_s0: __RV_fp:  .var 32
+    __RV_x9:  __RV_s1:           .var 32
+
+    __RV_x10: __RV_a0:           .var 32
+    __RV_x11: __RV_a1:           .var 32
+    __RV_x12: __RV_a2:           .var 32
+    __RV_x13: __RV_a3:           .var 32
+    __RV_x14: __RV_a4:           .var 32
+    __RV_x15: __RV_a5:           .var 32
+    __RV_x16: __RV_a6:           .var 32
+    __RV_x17: __RV_a7:           .var 32
+
+    __RV_x18: __RV_s2:           .var 32
+    __RV_x19: __RV_s3:           .var 32
+    __RV_x20: __RV_s4:           .var 32
+    __RV_x21: __RV_s5:           .var 32
+    __RV_x22: __RV_s6:           .var 32
+    __RV_x23: __RV_s7:           .var 32
+    __RV_x24: __RV_s8:           .var 32
+    __RV_x25: __RV_s9:           .var 32
+    __RV_x26: __RV_s10:          .var 32
+    __RV_x27: __RV_s11:          .var 32
+
+    __RV_x28: __RV_t3:           .var 32
+    __RV_x29: __RV_t4:           .var 32
+    __RV_x30: __RV_t5:           .var 32
+    __RV_x31: __RV_t6:           .var 32
+.end
+
+
+.def structs_init
+    .init_ptr
+    .stack 10*w
+.end
+
+
+.def functions_init
+
+.end
+
+
+
+// ---------- Jumps:
+
+
+

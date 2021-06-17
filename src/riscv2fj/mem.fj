@@ -1,4 +1,4 @@
-.segment __RISCV_MEM + 0x00400000*8*dw
+.segment __RV_MEM + 0x00400000*8*dw
 .var 8 127
 .var 8 69
 .var 8 76
@@ -1733,7 +1733,7 @@
 .var 8 0
 
 
-.segment __RISCV_MEM + 0x00600e18*8*dw
+.segment __RV_MEM + 0x00600e18*8*dw
 .var 8 255
 .var 8 255
 .var 8 255

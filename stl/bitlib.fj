@@ -1,8 +1,8 @@
 // Every line is (a bit) bananas!
 // Implementation of single bit-variables operations
 
-// should be assembled with an (exactly one) libXX.fjm file
-// This file is independent of the bit-width, and uses the consts defined at libXX.fjm
+// should be assembled with the runlib.fj file
+// This file is independent of the bit-width, and uses the consts defined at runlib.fj
 
 // Everything after // is ignored, everything before first : is ignored too, and every whitespace is ignored (besides new line)
 // An opcode is:  F;L  F  ;L  or just  ;  (no F => F=0;  no L => L=next)

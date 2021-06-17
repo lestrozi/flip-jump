@@ -1,8 +1,7 @@
 // Every line is (running) bananas!
-// This file contains the 64bit-specific code
+// This file contains a width-independent code
 
 // This file contains constants and labels used by other standard library files.
-// There should only be one libXX.fjm used per project
 
 // Everything after // is ignored, everything before first : is ignored too, and every whitespace is ignored (besides new line)
 // An opcode is:  F;L  F  ;L  or just  ;  (no F => F=0;  no L => L=next)
