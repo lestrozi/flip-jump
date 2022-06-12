@@ -1,0 +1,105 @@
+;start
+
+;0
+1;0
+
+
+start:
+// clear screen
+dw+1;  // OP
+dw+0;  // X
+dw+0;
+dw+0;
+dw+0;
+dw+0;
+dw+0;  // Y
+dw+0;
+dw+0;
+dw+0;
+dw+0;
+dw+1;  // W
+dw+1;
+dw+1;
+dw+1;
+dw+1;
+dw+1;  // H
+dw+1;
+dw+0;
+dw+0;
+dw+0;
+dw+0;  // COLOR
+
+// draw left paddle
+dw+1;  // OP
+dw+0;  // X
+dw+0;
+dw+0;
+dw+0;
+dw+1;
+dw+0;  // Y
+dw+1;
+dw+0;
+dw+0;
+dw+1;
+dw+0;  // W
+dw+0;
+dw+0;
+dw+0;
+dw+1;
+dw+0;  // H
+dw+0;
+dw+1;
+dw+1;
+dw+0;
+dw+1;  // COLOR
+
+// draw right paddle
+dw+1;  // OP
+dw+1;  // X
+dw+1;
+dw+1;
+dw+0;
+dw+1;
+dw+0;  // Y
+dw+1;
+dw+0;
+dw+0;
+dw+1;
+dw+0;  // W
+dw+0;
+dw+0;
+dw+0;
+dw+1;
+dw+0;  // H
+dw+0;
+dw+1;
+dw+1;
+dw+0;
+dw+1;  // COLOR
+
+// draw ball
+dw+1;  // OP
+dw+1;  // X
+dw+0;
+dw+0;
+dw+0;
+dw+0;
+dw+0;  // Y
+dw+1;
+dw+1;
+dw+0;
+dw+0;
+dw+0;  // W
+dw+0;
+dw+0;
+dw+0;
+dw+1;
+dw+0;  // H
+dw+0;
+dw+0;
+dw+0;
+dw+1;
+dw+1;  // COLOR
+
+end:
+;end

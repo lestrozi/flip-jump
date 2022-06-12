@@ -1,6 +1,7 @@
 import pickle
 from os import path
 from time import time
+from screen import Screen
 from sys import stdin, stdout
 from typing import Optional, List
 
@@ -28,6 +29,44 @@ def get_address_str(address, breakpoints, labels_dict):
 
 def run(input_file, breakpoints=None, defined_input: Optional[bytes] = None, verbose=False, time_verbose=False, output_verbose=False,
         next_break=None, labels_dict=None):
+    ###################################
+    # terrible hack, just a proof-of-concept
+    class DefaultOutput:
+        def __init__(self):
+            self.output_char, self.output_size = 0, 0
+            self.output = bytes()
+
+        def writeBit(self, bit):
+            self.output_char |= bit << self.output_size
+            self.output_byte = bytes([self.output_char])
+            self.output_size += 1
+            if self.output_size == 8:
+                self.output += self.output_byte
+                if output_verbose:
+                    if verbose:
+                        for _ in range(3):
+                            print()
+                        print(f'Outputted Char:  ', end='')
+                        stdout.buffer.write(bytes([self.output_char]))
+                        stdout.flush()
+                        for _ in range(3):
+                            print()
+                    else:
+                        stdout.buffer.write(bytes([self.output_char]))
+                        stdout.flush()
+                output_anything_yet = True
+                self.output_char, self.output_size = 0, 0
+
+    defaultOutput = DefaultOutput()
+    screen = Screen()
+
+    def getDevice(n):
+        if n == 0:
+            return defaultOutput
+        if n == 1:
+            return screen
+    ###################################
+
     if labels_dict is None:
         labels_dict = {}
     if breakpoints is None:
@@ -44,10 +83,9 @@ def run(input_file, breakpoints=None, defined_input: Optional[bytes] = None, ver
     w = mem.w
     out_addr = 2*w
     in_addr = 3*w + w.bit_length()     # 3w + dww
+    device_addr = 4*w
 
     input_char, input_size = 0, 0
-    output_char, output_size = 0, 0
-    output = bytes()
 
     if 0 not in labels_dict:
         labels_dict[0] = 'memory_start_0x0000'
@@ -99,25 +137,8 @@ def run(input_file, breakpoints=None, defined_input: Optional[bytes] = None, ver
 
         # handle output
         if out_addr <= f <= out_addr+1:
-            output_char |= (f-out_addr) << output_size
-            output_byte = bytes([output_char])
-            output_size += 1
-            if output_size == 8:
-                output += output_byte
-                if output_verbose:
-                    if verbose:
-                        for _ in range(3):
-                            print()
-                        print(f'Outputted Char:  ', end='')
-                        stdout.buffer.write(bytes([output_char]))
-                        stdout.flush()
-                        for _ in range(3):
-                            print()
-                    else:
-                        stdout.buffer.write(bytes([output_char]))
-                        stdout.flush()
-                output_anything_yet = True
-                output_char, output_size = 0, 0
+            device = mem.get_word(device_addr)
+            getDevice(device).writeBit(f-out_addr)
 
         # handle input
         if ip <= in_addr < ip+2*w:
@@ -148,12 +169,12 @@ def run(input_file, breakpoints=None, defined_input: Optional[bytes] = None, ver
             if output_verbose and output_anything_yet and breakpoints:
                 print()
             run_time = time()-start_time-pause_time
-            return run_time, ops_executed, flips_executed, output, TerminationCause.Looping        # infinite simple loop
+            return run_time, ops_executed, flips_executed, None, TerminationCause.Looping        # infinite simple loop
         if new_ip < 2*w:
             if output_verbose and output_anything_yet and breakpoints:
                 print()
             run_time = time() - start_time - pause_time
-            return run_time, ops_executed, flips_executed, output, TerminationCause.NullIP         # null ip
+            return run_time, ops_executed, flips_executed, None, TerminationCause.NullIP         # null ip
         ip = new_ip     # Jump!
 
 
